@@ -10,38 +10,33 @@
     <title>Project Cookbook</title>
 </head>
 <body style="padding:20px">
-    <h1>Welcome, {{session.first_name}}</h1>
-    <div class="container" style="display:flex; justify-content:space-between">
-        <p>All posted recipes:</p>
-        <div>
-            <a href="/create">+ Create</a>
-            <a href="/logout">logout</a>
+    <div class="nav d-flex justify-content-between mb-3">
+        <div class="left">
+            <h1>My Cookbook</h1>
+        </div>
+        <div class="right">
+            <a href="#">Test Kitchen</a>  |  <a href="#">Search</a>
         </div>
     </div>
-    <table class="table">
-        <th>Name</th>
-        <th>Under</th>
-        <th>Posted By</th>
-        <th>Actions</th>
-        {% for recipe in recipes %}
-            <tr>
-                <td>{{recipe.name}}</td>
-                <td>
-                    {% if recipe.under_30 %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                <td>{{recipe.user}}</td>
-                {% if session.user_id == recipe.user_id %}
-                    <td><a href="/recipes/{{recipe.id}}">view recipe</a> | <a href="/recipes/edit/{{recipe.id}}">edit</a> | <a href="/delete-recipe/{{recipe.id}}">delete</a></td>
-                    
-                {% else %}
-                    <td><a href="/recipes/{{recipe.id}}">view recipe</a></td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-    </table>
+    <div class="container" style="display:flex; justify-content:space-between">
+
+    </div>
+    <div class="row d-none d-lg-flex">
+        <p class="col-lg-3 d-md-6 col-sm-6"><b>Name</b></p>
+        <p class="col-lg-1 col-md-2 col-sm-2"><b>Type</b></p>
+        <p class="col-lg-1 col-md-2 col-sm-2"><b>Sub-type</b></p>
+        <p class="col-lg-1 col-md-2 col-sm-2"><b>Time</b></p>
+        <p class="col-lg-6 col-md-12 col-sm-12"><b>Description</b></p>
+        </div>
+        <!-- {% for recipe in recipes %} -->
+            <div class="row">
+                <p class="col-lg-3 col-md-6 col-sm-6 col-xs-2"><a href="#">{{recipe.name}}</a></p>
+                <p class="col-lg-1 col-md-2 col-sm-2 col-xs-2">Dessert</p>
+                <p class="col-lg-1 col-md-2 col-sm-2 col-xs-2">Cake</p>
+                <p class="col-lg-1 col-md-2 col-sm-2 col-xs-2">Prep + Cook</p>
+                <p class="col-lg-6 col-md-12 col-sm-12">Description of the item will go here. Try not to get too carried away.</p>
+                
+            </div>
+        <!-- {% endfor %} -->
 </body>
 </html>
