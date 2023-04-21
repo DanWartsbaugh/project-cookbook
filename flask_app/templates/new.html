@@ -16,34 +16,91 @@
         <a href="/logout" style="margin-left:5px">logout</a>
     </div>
     <h1>Add a New Recipe!</h1>
-    <form action="/new-recipe" method="post">
-        <input type="hidden" name="user_id" value={{session.user_id}}>
-        {% with messages = get_flashed_messages() %}     <!-- declare a variable called messages -->
-        {% if messages %}                            <!-- check if there are any messages -->
-        {% for message in messages %}            <!-- loop through the messages -->
-        <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-        <div class="form-control">
-            <div>
-                Name: <input type="text" name="name" id=""><br>
-                Description: <textarea name="description" id="" cols="30" rows="10"></textarea><br>
-                Instructions: <textarea name="instructions" id="" cols="30" rows="10"></textarea>
-            </div>
-            <div>
-                <p>Date Created/Made</p>
-                <input type="date" name="date_made" id="">
-                <p>Under 30 minutes?</p>
-                <input type="radio" name="under_30" value="1" id="yes">
-                <label for="yes">Yes</label>
-                <input type="radio" name="under_30" value="0" id="no">
-                <label for="no">No</label>
+    {% with messages = get_flashed_messages() %} <!-- declare a variable called messages -->
+    {% if messages %} <!-- check if there are any messages -->
+    {% for message in messages %} <!-- loop through the messages -->
+    <p>{{message}}</p> <!-- display each message in a paragraph tag -->
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form action="/create" method="post">
+        <input type="hidden" name="user_id" value="{{session.user_id}}">
 
-                <input type="submit" class="btn btn-secondary" value="Submit">
-            </div>
+        <div class="form-control">
+            Recipe Title: <input type="text" name="title" id="">
         </div>
+        <div class="form-control">
+            Cook Time: <input type="text" name="cook_time" id="">
+        </div>
+        <div class="form-control">
+            Prep Time: <input type="text" name="prep_time" id="">
+        </div>
+        <div class="form-control">
+            Description: <input type="text" name="description">
+        </div>
+        <div class="form-control" id="ingredients-section">
+            <label>Ingredients:</label>
+            <div id="ingredients_container">
+                <div class="ingredients_row">
+                    <input type="text" name="ingredients" class="ingredients-input">
+                    <button type="button" class="remove_ingredients_row">X</button>
+                </div>
+                <div class="ingredients_row">
+                    <input type="text" name="ingredients" class="ingredients-input">
+                    <button type="button" class="remove_ingredients_row">X</button>
+                </div>
+                <div class="ingredients_row">
+                    <input type="text" name="ingredients" class="ingredients-input">
+                    <button type="button" class="remove_ingredients_row">X</button>
+                </div>
+            </div>
+            <button type="button" id="add_ingredients_row">+</button>
+        </div>
+
+        <div class="form-control">
+            Directions:
+            <textarea name="directions">
+
+            </textarea>
+        </div>
+
+
+        <input type="submit" value="Add Recipe">
     </form>
 </body>
+<script>
+    // This variable will be used to reference the button to add html rows to our html
+    const addIngredientsRowButton = document.getElementById("add_ingredients_row");
 
+    // this variable references the div with ingredients_container in it
+    const ingredientsContainer = document.getElementById("ingredients_container");
+
+    addIngredientsRowButton.addEventListener("click", () => {
+
+        // We are defining our actual row we want to input in
+        const ingredientsRowHtml = `
+    <div class="ingredients_row">
+      <input type="text" name="ingredients" class="ingredients_input">
+      <button type="button" class="remove_ingredients_row">X</button>
+    </div>
+  `;
+        // This searches our document for the ingredients container and inserts a row on click we use insertAdjacentHTML, giving it a position.
+        // The string we gave it is our html variable we defined.  Before end places the the html as the last row
+        ingredientsContainer.insertAdjacentHTML('beforeend', ingredientsRowHtml);
+
+
+        //this allows us to remove unwanted rows by selecting a class we defined in this case the .remove_ingredients_row
+        const removeIngredientsButtons = ingredientsContainer.querySelectorAll(".remove_ingredients_row");
+
+        //each time the button is clicked
+        removeIngredientsButtons.forEach((button) => {
+
+            //We tell the EventListener to watch for a click
+            button.addEventListener("click", (event) => {
+                //it targets the parentNode which is the div in this case
+                event.target.parentNode.remove();
+            });
+        });
+    });
+</script>
 </html>
