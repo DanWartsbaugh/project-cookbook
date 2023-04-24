@@ -35,7 +35,7 @@ class User:
     #CREATE - update values needed in addition to name
     @classmethod
     def save(cls, data):
-        query = "INSERT INTO users (first_name, last_name, email, password) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s);"
+        query = "INSERT INTO users (user_name, first_name, last_name, email, password) VALUES (%(user_name)s, %(first_name)s, %(last_name)s, %(email)s, %(password)s);"
         return connectToMySQL(DATABASE).query_db(query, data)
     
 
