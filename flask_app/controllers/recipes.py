@@ -18,6 +18,12 @@ def load_search():
         return redirect('/logout')
     return render_template('search.html')
 
+@app.route('/testkitchen')
+def test_board():
+    if 'user_id' not in session:
+        return redirect('/logout')
+    return render_template('test_board.html')
+
 #NEW - render form
 @app.route('/mycookbook/new-recipe')
 def new_recipe():

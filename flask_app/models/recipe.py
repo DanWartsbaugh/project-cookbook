@@ -13,6 +13,7 @@ class Recipe:
         self.prep_time = data['prep_time']
         self.cook_time = data['cook_time']
         self.description = data['description']
+        self.ingredients = data['ingredients']
         self.directions = data['directions']
         self.test = data['test']
         self.notes = data['notes']

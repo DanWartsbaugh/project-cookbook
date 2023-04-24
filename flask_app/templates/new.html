@@ -11,6 +11,14 @@
 </head>
 
 <body>
+    <div class="nav d-flex justify-content-between mb-3 border-bottom border-dark">
+        <div class="left">
+            <h1 style="color:orange">My Cookbook</h1>
+        </div>
+        <div class="right">
+            <a href="/mycookbook" style="text-decoration:none;color:orange"><b>My Cookbook</b></a>  |  <a href="/testkitchen" style="text-decoration:none;color:orange"><b>Test Kitchen</b></a>  |  <a href="/logout" style="text-decoration:none;color:orange"><b>Logout</b></a>
+        </div>
+    </div>
     <h1>Create a New Recipe</h1>
     {% with messages = get_flashed_messages() %} <!-- declare a variable called messages -->
     {% if messages %} <!-- check if there are any messages -->
