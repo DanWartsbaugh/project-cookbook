@@ -1,16 +1,16 @@
-[ ] log in
-[ ] register - render form
-[ ] register - process form and redirect to dashboard
-[ ] log out
-[ ] dashboard - render dashboard.html (get_all_recipes(), goes to my cookbook)
-[ ] test kitchen - render (get_test_recipes(), which is like get_all but where test=true)
-[ ] search - render search.html
-[ ] new recipe - render new.html
+[X] log in - redirect to /mycookbook
+[X] register - render form
+[X] register - process form and redirect to dashboard
+[X] log out
+[x] dashboard - render dashboard.html (get_all_recipes(), goes to my cookbook)
+[R] test kitchen - render (get_test_recipes(), which is like get_all but where test=true)
+[X] search - render search.html
+[X] new recipe - render new.html ('/mycookbook/new-recipe')
 [ ] new recipe - process form and redirect to show page for that recipe
-[ ] show recipe - render show.html (recipe/<int:id>)
+[R] show recipe - render show.html (recipe/<int:id>)
 [ ] save recipe - add recipe to cookbook and redirect to show page for that recipe
 [ ] send recipe to test kitchen - change test attribute to true and redirect to show in test page for that recipe
-[ ] edit recipe - render form (recipe/edit/<int:id>)
+[R] edit recipe - render form (recipe/edit/<int:id>)
 [ ] edit recipe - process form and redirect to show page for that recipe
 [ ] delete recipe - redirect to dashboard
 [ ] hide ingredients - on test page

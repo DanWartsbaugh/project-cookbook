@@ -4,40 +4,47 @@ from flask_app.models.recipe import Recipe
 
 
 #GET ALL
-@app.route('/recipes')
+@app.route('/mycookbook')
 def get_all_recipes():
     if 'user_id' not in session:
         return redirect('/logout')
-    recipes = Recipe.get_all_recipes()
+    recipes = Recipe.get_all_recipes(session['user_id'])
     return render_template('dashboard.html', recipes = recipes)
 
+#SEARCH PAGE
+@app.route('/search')
+def load_search():
+    if 'user_id' not in session:
+        return redirect('/logout')
+    return render_template('search.html')
+
 #NEW - render form
-@app.route('/create')
+@app.route('/mycookbook/new-recipe')
 def new_recipe():
     if 'user_id' not in session:
-        return redirect('/recipes')
+        return redirect('/mycookbook')
     return render_template('new.html')
 
 #NEW - process the form and redirect
-@app.route('/new-recipe', methods=['POST'])
+@app.route('/create', methods=['POST'])
 def create_recipe():
     if not Recipe.validate_recipe(request.form):
-        return redirect('/create')
+        return redirect('/mycookbook/new-recipe')
     Recipe.save(request.form)
-    return redirect('/recipes')
+    return redirect('/recipes') #redirect to show page for this recipe
 
-@app.route('/recipes/<int:id>')
+@app.route('/recipe/<int:id>')
 def show_recipe(id):
     return render_template("show.html",recipe=Recipe.get_recipe(id))
 
 #UPDATE - This route renders the form
-@app.route('/recipes/edit/<int:id>')
+@app.route('/edit/<int:id>')
 def edit(id):
     if 'user_id' not in session:
-        return redirect('/recipes')
+        return redirect('/mycookbook')
     recipe = Recipe.get_recipe(id)
     if session['user_id'] != recipe.user_id:
-        return redirect('/recipes')
+        return redirect('/mycookbook')
     return render_template('edit.html', recipe=recipe)
 
 #UPDATE - Processing

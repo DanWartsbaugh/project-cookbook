@@ -5,6 +5,10 @@ from flask_app.models.user import User
 def index():
     return render_template('index.html')
 
+@app.route('/register_user')
+def register_user():
+    return render_template('register.html')
+
 #REGISTER
 @app.route('/register', methods=['POST'])
 def register():
@@ -17,6 +21,7 @@ def register():
 
     #save the user to the DB
     temp_user = {
+        'user_name':request.form['user_name'],
         'first_name':request.form['first_name'],
         'last_name':request.form['last_name'],
         'email':request.form['email'],
@@ -28,7 +33,7 @@ def register():
     session['user_id'] = user
     session['first_name'] = request.form['first_name']
 
-    return redirect('/recipes')
+    return redirect('/mycookbook')
 
 #LOGIN
 @app.route('/login', methods=['POST'])
@@ -48,11 +53,10 @@ def login():
     session['first_name']=user.first_name
     session['last_name']=user.last_name
     
-    return redirect('/recipes')
+    return redirect('/mycookbook')
 
 #LOGOUT
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect('/')
-
