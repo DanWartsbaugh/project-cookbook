@@ -12,39 +12,36 @@
 <body style="padding:20px">
     <div class="nav d-flex justify-content-between mb-3 border-bottom border-dark">
         <div class="left">
-            <h1 style="color:orange">My Cookbook</h1>
+            <h1 style="color:orange">My Test Kitchen</h1>
         </div>
         <div class="right">
-            <a href="#" style="text-decoration:none;color:orange"><b>Test Kitchen</b></a>  |  <a href="#" style="text-decoration:none;color:orange"><b>Search</b></a>  |  <a href="/logout" style="text-decoration:none;color:orange"><b>Logout</b></a>
+            <a href="#" style="text-decoration:none;color:orange"><b>My Cookbook</b></a>  |  <a href="#" style="text-decoration:none;color:orange"><b>Search</b></a>  |  <a href="/logout" style="text-decoration:none;color:orange"><b>Logout</b></a>
         </div>
     </div>
 
-    <div class="d-flex align-items-center mb-3">
-        
-            <a href="#" style="text-decoration:none;color:orange"><b>Filter recipes</b></a>
-            <input type="search" name="search-bar" style="margin-left:15px;width:30%" placeholder="Search recipes">
-            <button class="btn" style="background-color:orange; margin-left:15px;"><b>Search</b></button>
-            <button class="btn" style="background-color:orange; margin-left:15px;"><b>Create a new recipe</b></button>
-        
-    </div>
     <!-- Recipes -->
     <div class="row d-none d-lg-flex">
         <div class="col d-flex">
         <h4 class="col">Name</h4>
-        <h4 class="col">Type</h4>
-        <h4 class="col">Sub-type</h4>
-        <h4 class="col">Time</h4>
+        <h4 class="col text-center">Type</h4>
+        <h4 class="col text-center">Sub-type</h4>
+        <h4 class="col text-center">Time</h4>
+        <h4 class="col text-center">Updated</h4>
         </div>
-        <h4 class="col-lg-4">Description</h4>
+        
+        <h4 class="col-4">Description</h4>
+        
+        
     </div>
         <!-- {% for recipe in recipes %} -->
             <a href="#" style="text-decoration:none;color:black">
                 <div class="row d-flex border-bottom">
                 <div class="col d-flex">
                 <p class="col"><b>{{recipe.name}}</b></p>
-                <p class="col">Dessert</p>
-                <p class="col">Cake</p>
-                <p class="col">Prep + Cook</p>
+                <p class="col text-center">Dessert</p>
+                <p class="col text-center">Cake</p>
+                <p class="col text-center">Prep + Cook</p>
+                <p class="col text-center">May 2, 2022</p>
                 </div>
                 <p class="col-9 col-lg-4">Description of the item will go here. Try not to get too carried away.</p>
                 
