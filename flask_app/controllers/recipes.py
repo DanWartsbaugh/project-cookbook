@@ -1,5 +1,7 @@
 from flask_app import app, render_template, redirect, request, session, flash, bcrypt
 from flask_app.models.recipe import Recipe
+from flask_app.models.ingredient import Ingredient
+from pprint import pprint
 
 
 
@@ -34,10 +36,18 @@ def new_recipe():
 #NEW - process the form and redirect
 @app.route('/create', methods=['POST'])
 def create_recipe():
-    if not Recipe.validate_recipe(request.form):
-        return redirect('/mycookbook/new-recipe')
-    Recipe.save(request.form)
-    return redirect('/recipes') #redirect to show page for this recipe
+
+    # if not Recipe.validate_recipe(request.form):
+    #     return redirect('/mycookbook/new-recipe')
+    pprint(request.form)
+    recipe=Recipe.save(request.form)
+    # print(recipe)
+    pprint("args = ",request.args.get(request.form['ingredients']))
+    pprint(request.form.getlist('ingredients'))
+    for ingredient in request.form.getlist('ingredients'):
+        print(ingredient)
+        Ingredient.save_ingredient(recipe_id=recipe,name=ingredient)
+    return redirect('/mycookbook') #redirect to show page for this recipe
 
 @app.route('/recipe/<int:id>')
 def show_recipe(id):

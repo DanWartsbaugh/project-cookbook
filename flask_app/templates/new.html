@@ -31,7 +31,7 @@
         <input type="hidden" name="user_id" value="{{session.user_id}}">
 
         <div class="form-control">
-            Recipe Title: <input type="text" name="title" id="">
+            Recipe Title: <input type="text" name="name" id="">
         </div>
         <div class="form-control">
             Cook Time: <input type="text" name="cook_time" id="">
@@ -47,41 +47,14 @@
                 <label>Ingredients:</label>
                 <div class="ingredients_row">
                     <input type="text" name="ingredients" class="ingredients_input">
-                    <input type="text" name="ingredient_quantity" class="ingredient_quantity_input">
-                    <select name="ingredient_measurement" class="ingredient-measurement-select">
-                        <option value="none">--Select--</option>
-                        <option value="tsp">tsp</option>
-                        <option value="tbsp">tbsp</option>
-                        <option value="cup">cup</option>
-                        <option value="oz">oz</option>
-                        <option value="lb">lb</option>
-                    </select>
                     <button type="button" class="remove_ingredients_row">X</button>
                 </div>
                 <div class="ingredients_row">
                     <input type="text" name="ingredients" class="ingredients_input">
-                    <input type="text" name="ingredient_quantity" class="ingredient-quantity_input">
-                    <select name="ingredient_measurement" class="ingredient_measurement_select">
-                        <option value="none">--Select--</option>
-                        <option value="tsp">tsp</option>
-                        <option value="tbsp">tbsp</option>
-                        <option value="cup">cup</option>
-                        <option value="oz">oz</option>
-                        <option value="lb">lb</option>
-                    </select>
                     <button type="button" class="remove_ingredients_row">X</button>
                 </div>
                 <div class="ingredients_row">
                     <input type="text" name="ingredients" class="ingredients_input">
-                    <input type="text" name="ingredient_quantity" class="ingredient-quantity_input">
-                    <select name="ingredient_measurement" class="ingredient_measurement_select">
-                        <option value="none">--Select--</option>
-                        <option value="tsp">tsp</option>
-                        <option value="tbsp">tbsp</option>
-                        <option value="cup">cup</option>
-                        <option value="oz">oz</option>
-                        <option value="lb">lb</option>
-                    </select>
                     <button type="button" class="remove_ingredients_row">X</button>
                 </div>
             </div>
@@ -89,8 +62,8 @@
         </div>
 
         <div class="form-control">
-            Directions:
-            <textarea name="directions">
+            Instructions:
+            <textarea name="instructions">
 
             </textarea>
         </div>

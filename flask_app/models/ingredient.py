@@ -8,14 +8,16 @@ class Ingredient:
     def __init__(self,data:dict):
         self.id = data['id']
         self.name = data['name']
-        self.description = data['description']
-        self.instructions = data['instructions']
-        self.under_30 = data['under_30']
-        self.date_made = data['date_made']
-        self.user_id = data['user_id']
+        self.recipe_id = data['recipe_id']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.user = data['first_name']
+
+    #CREATE
+    @classmethod
+    def save_ingredient(cls, **kwargs):
+        data = kwargs
+        query = "INSERT INTO ingredients (name, recipe_id) VALUES (%(name)s, %(recipe_id)s);"
+        return connectToMySQL(DATABASE).query_db(query, data)
 
     #READ ALL
     @classmethod
@@ -27,11 +29,6 @@ class Ingredient:
             ingredients.append(cls(ingredient))
         return ingredients
 
-    #CREATE
-    @classmethod
-    def save(cls, data):
-        query = "INSERT INTO ingredients (name, description, instructions, under_30, date_made, user_id) VALUES (%(name)s,%(description)s,%(instructions)s,%(under_30)s,%(date_made)s,%(user_id)s);"
-        return connectToMySQL(DATABASE).query_db(query, data)
     
     # UPDATE
     @classmethod
