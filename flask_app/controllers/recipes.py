@@ -41,8 +41,6 @@ def create_recipe():
     #     return redirect('/mycookbook/new-recipe')
     pprint(request.form)
     recipe=Recipe.save(request.form)
-    # print(recipe)
-    pprint("args = ",request.args.get(request.form['ingredients']))
     pprint(request.form.getlist('ingredients'))
     for ingredient in request.form.getlist('ingredients'):
         print(ingredient)
@@ -51,6 +49,7 @@ def create_recipe():
 
 @app.route('/recipe/<int:id>')
 def show_recipe(id):
+    print
     return render_template("show.html",recipe=Recipe.get_recipe(id))
 
 #UPDATE - This route renders the form

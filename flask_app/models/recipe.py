@@ -1,5 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app import flash
+from flask_app.models.ingredient import Ingredient
 
 DATABASE = "cookbook_schema"
 
@@ -20,6 +21,8 @@ class Recipe:
         self.user_id = data['user_id']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.user_name = data['user_name']
+        self.ingredients = []
 
 
 
@@ -27,7 +30,7 @@ class Recipe:
     @classmethod
     def get_all_recipes(cls,id):
         data={'id':id}
-        query = "SELECT * FROM recipes WHERE user_id = %(id)s;"
+        query = "SELECT * FROM recipes JOIN users ON users.id = recipes.user_id WHERE user_id = %(id)s;"
         results = connectToMySQL(DATABASE).query_db(query,data)
         recipes = []
         for recipe in results:
@@ -35,15 +38,12 @@ class Recipe:
         return recipes
 
     #CREATE
-    # @classmethod
-    # def save(cls, data):
-    #     query = "INSERT INTO recipes (name, type, sub_type, prep_time, cook_time, description, instructions, test, notes, open, user_id) VALUES (%(name)s,%(type)s,%(sub_type)s,%(prep_time)s,%(cook_time)s,%(description)s,%(instructions)s,%(test)s,%(notes)s,%(open)s,%(user_id)s);"
-    #     return connectToMySQL(DATABASE).query_db(query, data)
-    
     @classmethod
-    def save(cls, data):
-        query = "INSERT INTO recipes (name, prep_time, cook_time, description, instructions, user_id) VALUES (%(name)s,%(prep_time)s,%(cook_time)s,%(description)s,%(instructions)s,%(user_id)s);"
+    def save(cls, data,type=None,sub_type=None,prep_time=None,cook_time=None,description=None,notes=None):
+        query = "INSERT INTO recipes (name, type, sub_type, prep_time, cook_time, description, instructions, user_id, test, notes, open) VALUES (%(name)s,%(type)s,%(sub_type)s,%(prep_time)s,%(cook_time)s,%(description)s,%(instructions)s,%(user_id)s,%(test)s,%(notes)s,%(open)s);"
         return connectToMySQL(DATABASE).query_db(query, data)
+    
+
 
 
     # UPDATE
@@ -62,24 +62,21 @@ class Recipe:
     #READ ONE WITH OTHERS (e.g. get user with recipes)
     @classmethod
     def get_recipe(cls,id):
-        query = "SELECT * FROM recipes JOIN users ON recipes.user_id = users.id WHERE recipes.id = %(id)s;"
+        query = "SELECT * FROM recipes JOIN users ON recipes.user_id = users.id JOIN ingredients on recipes.id = ingredients.recipe_id WHERE recipes.id = %(id)s;"
         data = {'id':id}
         results = connectToMySQL(DATABASE).query_db(query,data)
         # print("results =", results)
-        user = cls(results[0])
-        for recipe in results:
-            recipe_data = {
-                "id":recipe["id"],
-                "name":recipe["name"],
-                "description":recipe["description"],
-                "instructions":recipe["instructions"],
-                "user_id":recipe["user_id"],
-                "created_at":recipe["created_at"],
-                "updated_at":recipe["updated_at"],
-                "user":recipe["first_name"],
+        recipe = cls(results[0])
+        for ingredient in results:
+            ingredient_data = {
+                "id":ingredient["id"],
+                "name":ingredient["ingredients.name"],
+                "created_at":ingredient["created_at"],
+                "updated_at":ingredient["updated_at"],
+                "recipe_id":ingredient["recipe_id"]
             }
-            # user.recipes.append( Recipe( recipe_data ) )
-        return user
+            recipe.ingredients.append( Ingredient( ingredient_data ) )
+        return recipe
     
     @staticmethod
     def validate_recipe(recipe):

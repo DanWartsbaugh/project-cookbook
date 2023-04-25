@@ -10,7 +10,7 @@
     <title>Document</title>
 </head>
 
-<body>
+<body style="padding:20px">
     <div class="nav d-flex justify-content-between mb-3 border-bottom border-dark">
         <div class="left">
             <h1 style="color:orange">My Cookbook</h1>
@@ -19,7 +19,7 @@
             <a href="/mycookbook" style="text-decoration:none;color:orange"><b>My Cookbook</b></a>  |  <a href="/testkitchen" style="text-decoration:none;color:orange"><b>Test Kitchen</b></a>  |  <a href="/logout" style="text-decoration:none;color:orange"><b>Logout</b></a>
         </div>
     </div>
-    <h1>Create a New Recipe</h1>
+    <h2>Create a New Recipe</h2>
     {% with messages = get_flashed_messages() %} <!-- declare a variable called messages -->
     {% if messages %} <!-- check if there are any messages -->
     {% for message in messages %} <!-- loop through the messages -->
@@ -29,22 +29,30 @@
     {% endwith %}
     <form action="/create" method="post">
         <input type="hidden" name="user_id" value="{{session.user_id}}">
+        <input type="hidden" name="test" value=0>
+        <input type="hidden" name="notes" value="">
+        <input type="hidden" name="open" value=1>
 
         <div class="form-control">
-            Recipe Title: <input type="text" name="name" id="">
+            <label for="name"><h4>Recipe Name:</h4></label>  <input type="text" name="name" id="">
         </div>
         <div class="form-control">
-            Cook Time: <input type="text" name="cook_time" id="">
+            <label for="prep_time"><h4>Prep Time:</h4></label>  <input type="text" name="prep_time" value="0"> minutes (whole numbers only)
         </div>
         <div class="form-control">
-            Prep Time: <input type="text" name="prep_time" id="">
+            <label for="cook_time"><h4>Cook Time:</h4></label>  <input type="text" name="cook_time" value="0"> minutes (whole numbers only)
         </div>
         <div class="form-control">
-            Description: <input type="text" name="description">
+            <label for="type"><h4>Type:</h4></label>  <input type="text" name="type" id="">
+        </div>        <div class="form-control">
+            <label for="sub_type"><h4>Sub-type:</h4></label>  <input type="text" name="sub_type" id="">
+        </div>
+        <div class="form-control">
+            <label for="description"><h4>Description:</h4></label>  <input type="text" name="description">
         </div>
         <div class="form-control" id="ingredients-section">
             <div id="ingredients_container">
-                <label>Ingredients:</label>
+                <label><h4>Ingredients:</h4></label>
                 <div class="ingredients_row">
                     <input type="text" name="ingredients" class="ingredients_input">
                     <button type="button" class="remove_ingredients_row">X</button>
@@ -62,10 +70,8 @@
         </div>
 
         <div class="form-control">
-            Instructions:
-            <textarea name="instructions">
-
-            </textarea>
+            <h4>Instructions:</h4>
+            <textarea name="instructions" rows="10" cols="40"></textarea>
         </div>
 
 
