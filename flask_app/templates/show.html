@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <h3>Recipe Name</h3>
+    <h3>{{recipe.name}}</h3>
     <p>created by: {{recipe.user_name}}</p>
     <div class="d-flex mb-3">
         <button style="width:150px;background-color:orange;margin-right:5px;">Save to my cookbook</button>
@@ -29,8 +29,8 @@
     <h5>Total time to prepare: {{recipe.prep_time + recipe.cook_time}}</h5>
     <p><i>Prep time: {{recipe.prep_time}} minutes<br>Cook time: {{recipe.cook_time}} minutes</i></p>
     <br>
-    <h5>{{recipe.type}}</h5>
-    <h5>{{recipe.sub_type}}</h5>
+    <h5>Type: {{recipe.type}}</h5>
+    <h5>Sub-type: {{recipe.sub_type}}</h5>
     <br>
     <p>{{recipe.description}}</p>
     <br>
