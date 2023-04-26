@@ -19,6 +19,8 @@ class Recipe:
         self.notes = data['notes']
         self.open = data['open']
         self.user_id = data['user_id']
+        self.original = data['original']
+        self.version = data['version']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.user_name = data['user_name']
@@ -30,26 +32,42 @@ class Recipe:
     @classmethod
     def get_all_recipes(cls,id):
         data={'id':id}
-        query = "SELECT * FROM recipes JOIN users ON users.id = recipes.user_id WHERE user_id = %(id)s;"
+        query = "SELECT * FROM recipes JOIN users ON users.id = recipes.user_id WHERE user_id = %(id)s AND test = 0;"
         results = connectToMySQL(DATABASE).query_db(query,data)
         recipes = []
         for recipe in results:
             recipes.append(cls(recipe))
         return recipes
 
+    @classmethod
+    def get_test_recipes(cls,id):
+        data={'id':id}
+        query = "SELECT * FROM recipes JOIN users ON users.id = recipes.user_id WHERE user_id = %(id)s AND test = 1;"
+        results = connectToMySQL(DATABASE).query_db(query,data)
+        recipes = []
+        for recipe in results:
+            recipes.append(cls(recipe))
+        return recipes
+    
+    
     #CREATE
     @classmethod
     def save(cls, data,type=None,sub_type=None,prep_time=None,cook_time=None,description=None,notes=None):
-        query = "INSERT INTO recipes (name, type, sub_type, prep_time, cook_time, description, instructions, user_id, test, notes, open) VALUES (%(name)s,%(type)s,%(sub_type)s,%(prep_time)s,%(cook_time)s,%(description)s,%(instructions)s,%(user_id)s,%(test)s,%(notes)s,%(open)s);"
+        query = "INSERT INTO recipes (name, type, sub_type, prep_time, cook_time, description, instructions, user_id, test, notes, open, original, version) VALUES (%(name)s,%(type)s,%(sub_type)s,%(prep_time)s,%(cook_time)s,%(description)s,%(instructions)s,%(user_id)s,%(test)s,%(notes)s,%(open)s,%(original)s,%(version)s);"
         return connectToMySQL(DATABASE).query_db(query, data)
     
 
-
+    #SEND TO TEST KITCHEN
+    @classmethod
+    def send_to_test(cls,id):
+        data={'id':id}
+        query = "UPDATE recipes SET test=1, original = %(id)s WHERE id=%(id)s"
+        return connectToMySQL(DATABASE).query_db(query,data)
 
     # UPDATE
     @classmethod
     def update(cls,data):
-        query = "UPDATE recipes SET name=%(name)s, type=%(type)s, sub_type=%(sub_type)s, prep_time=%(prep_time)s, cook_time=%(cook_time)s, description=%(description)s,instructions=%(instructions)s,test=%(test)s,notes=%(notes)s,open=%(open)s WHERE id = %(id)s;"
+        query = "UPDATE recipes SET name=%(name)s, type=%(type)s, sub_type=%(sub_type)s, prep_time=%(prep_time)s, cook_time=%(cook_time)s, description=%(description)s,instructions=%(instructions)s WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
     
     #DELETE
@@ -70,7 +88,7 @@ class Recipe:
         for ingredient in results:
             ingredient_data = {
                 "id":ingredient["id"],
-                "name":ingredient["ingredients.name"],
+                "text":ingredient["text"],
                 "created_at":ingredient["created_at"],
                 "updated_at":ingredient["updated_at"],
                 "recipe_id":ingredient["recipe_id"]

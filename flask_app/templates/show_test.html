@@ -34,7 +34,7 @@
 
     </select>
 
-    <h5>Total time to prepare: {{recipe.prep_time + recipe.cook_time}}</h5>
+    <h5>Total time to prepare: {{recipe.prep_time + recipe.cook_time}} minutes</h5>
     <p><i>Prep time: {{recipe.prep_time}} minutes<br>Cook time: {{recipe.cook_time}} minutes</i></p>
     <br>
     <h5>Type: {{recipe.type}}</h5>
@@ -47,7 +47,7 @@
             <h4>Ingredients</h4>
             <ul>
                 {% for ingredient in recipe.ingredients %}
-                <li>{{ingredient.name}}</li>
+                <li>{{ingredient.text}}</li>
                 {% endfor %}
             </ul>
         </div>

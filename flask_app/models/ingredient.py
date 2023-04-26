@@ -7,7 +7,7 @@ class Ingredient:
 
     def __init__(self,data:dict):
         self.id = data['id']
-        self.name = data['name']
+        self.text = data['text']
         self.recipe_id = data['recipe_id']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
@@ -16,7 +16,7 @@ class Ingredient:
     @classmethod
     def save_ingredient(cls, **kwargs):
         data = kwargs
-        query = "INSERT INTO ingredients (name, recipe_id) VALUES (%(name)s, %(recipe_id)s);"
+        query = "INSERT INTO ingredients (text, recipe_id) VALUES (%(text)s, %(recipe_id)s);"
         return connectToMySQL(DATABASE).query_db(query, data)
 
     #READ ALL
@@ -33,7 +33,7 @@ class Ingredient:
     # UPDATE
     @classmethod
     def update(cls,data):
-        query = "UPDATE ingredients SET name=%(name)s, description=%(description)s, instructions=%(instructions)s, under_30=%(under_30)s, date_made=%(date_made)s WHERE id = %(id)s;"
+        query = "UPDATE ingredients SET text=%(text)s, description=%(description)s, instructions=%(instructions)s, under_30=%(under_30)s, date_made=%(date_made)s WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
     
     #DELETE
@@ -54,7 +54,7 @@ class Ingredient:
         for ingredient in results:
             ingredient_data = {
                 "id":ingredient["id"],
-                "name":ingredient["name"],
+                "text":ingredient["text"],
                 "description":ingredient["description"],
                 "instructions":ingredient["instructions"],
                 "under_30":ingredient["under_30"],

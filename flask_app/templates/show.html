@@ -23,7 +23,7 @@
     <p>created by: {{recipe.user_name}}</p>
     <div class="d-flex mb-3">
         <button style="width:150px;background-color:orange;margin-right:5px;">Save to my cookbook</button>
-        <button style="width:150px;background-color:orange;margin-left:5px">Send to my test kitchen</button>
+        <button onclick=window.location.href="/testkitchen/send/{{recipe.id}}" style="width:150px;background-color:orange;margin-left:5px">Send to my test kitchen</button>
 
     </div>
     <h5>Total time to prepare: {{recipe.prep_time + recipe.cook_time}}</h5>
@@ -38,7 +38,7 @@
     
     <ul>
         {% for ingredient in recipe.ingredients %}
-        <li>{{ingredient.name}}</li>
+        <li>{{ingredient.text}}</li>
         {% endfor %}
     </ul>
     <br>
