@@ -101,9 +101,17 @@ def edit(id):
 #UPDATE - Processing
 @app.route('/recipes/update/<int:id>',methods=['POST'])
 def update(id):
+    pprint(request.form)
     # if not Recipe.validate_recipe(request.form):
     #     return redirect(f"/recipes/edit/{request.form['id']}")
     Recipe.update(request.form)
+    ids=request.form.getlist('ingredient-id')
+    vals=request.form.getlist('ingredients')
+    print(ids)
+    print(vals)
+    for i in range (len(ids)):
+        data={'id':ids[i],'text':vals[i]}
+        Ingredient.update_ingredients(data)
     return redirect(f"/mycookbook/recipe/{id}")
 
 #DELETE

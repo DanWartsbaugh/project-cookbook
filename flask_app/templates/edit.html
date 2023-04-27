@@ -53,6 +53,7 @@
                 {% for ingredient in recipe.ingredients %}
                     
                 <div class="ingredients_row">
+                    <input type="hidden" name="ingredient-id" value="{{ingredient.id}}">
                     <input type="text" name="ingredients" class="ingredients_input" value="{{ingredient.text}}">
                     <button type="button" class="remove_ingredients_row">X</button>
                 </div>
