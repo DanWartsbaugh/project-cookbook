@@ -45,7 +45,8 @@ def create_recipe():
     pprint(request.form.getlist('ingredients'))
     for ingredient in request.form.getlist('ingredients'):
         print(ingredient)
-        Ingredient.save_ingredient(recipe_id=recipe,name=ingredient)
+        if ingredient != '':
+            Ingredient.save_ingredient(recipe_id=recipe,text=ingredient)
     return redirect('/mycookbook') #redirect to show page for this recipe
 
 #NEW VERSION OF RECIPE- render form
