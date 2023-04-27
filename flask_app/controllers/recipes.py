@@ -2,6 +2,7 @@ from flask_app import app, render_template, redirect, request, session, flash, b
 from flask_app.models.recipe import Recipe
 from flask_app.models.ingredient import Ingredient
 from pprint import pprint
+import requests
 
 
 
@@ -14,11 +15,45 @@ def get_all_recipes():
     return render_template('dashboard.html', recipes = recipes)
 
 #SEARCH PAGE
-@app.route('/search')
-def load_search():
+@app.route('/search/<letter>')
+def load_search(letter):
     if 'user_id' not in session:
         return redirect('/logout')
-    return render_template('search.html')
+    data = requests.get(f"https://www.themealdb.com/api/json/v1/1/search.php?f={letter}").json()
+    pprint(data)
+    return render_template('search.html', data=data)
+
+@app.route('/search/<int:id>')
+def load_id(id):
+    if 'user_id' not in session:
+        return redirect('/logout')
+    data = requests.get(f"https://www.themealdb.com/api/json/v1/1/lookup.php?i={id}").json()
+    pprint(data)
+
+        #create a variable array for ingredients for us to append to
+    ingredients = []
+
+    #this loops over our data dictionary 
+    for meal in data['meals']:
+        
+        #this checks each ingredient, there are 20 possible slots so we need to check each one for an ingredient
+        for i in range(1, 21):
+            #embedded expression to evaluate dynamic number since i will be changing.
+            ingredient_key = f'strIngredient{i}'
+            measure_key = f'strMeasure{i}'
+
+            #the loop is checking each key manually, starting at 1 by putting in a literal string
+            if ingredient_key in meal:
+                ingredient = meal[ingredient_key]
+                measure = meal[measure_key]
+
+                #I needed this because otherwise it displays empty numbers in my list
+                if measure:
+                    ingredient_str = f"{ingredient}: {measure}"
+                    ingredients.append(ingredient_str)
+                else:
+                    ingredients.append(ingredient)
+    return render_template('show_api.html', data=data, ingredients=ingredients)
 
 @app.route('/testkitchen')
 def test_board():
@@ -48,6 +83,41 @@ def create_recipe():
         if ingredient != '':
             Ingredient.save_ingredient(recipe_id=recipe,text=ingredient)
     return redirect('/mycookbook') #redirect to show page for this recipe
+
+@app.route('/random')
+def load_random():
+    if 'user_id' not in session:
+        return redirect('/logout')
+    
+    #this is our api request
+    data = requests.get("https://www.themealdb.com/api/json/v1/1/random.php").json()
+    pprint(data)
+
+    #create a variable array for ingredients for us to append to
+    ingredients = []
+
+    #this loops over our data dictionary 
+    for meal in data['meals']:
+        
+        #this checks each ingredient, there are 20 possible slots so we need to check each one for an ingredient
+        for i in range(1, 21):
+            #embedded expression to evaluate dynamic number since i will be changing.
+            ingredient_key = f'strIngredient{i}'
+            measure_key = f'strMeasure{i}'
+
+            #the loop is checking each key manually, starting at 1 by putting in a literal string
+            if ingredient_key in meal:
+                ingredient = meal[ingredient_key]
+                measure = meal[measure_key]
+
+                #I needed this because otherwise it displays empty numbers in my list
+                if measure:
+                    ingredient_str = f"{ingredient}: {measure}"
+                    ingredients.append(ingredient_str)
+                else:
+                    ingredients.append(ingredient)
+
+    return render_template('random.html', data=data, ingredients=ingredients)
 
 #NEW VERSION OF RECIPE- render form
 @app.route('/testkitchen/new/<int:id>')
