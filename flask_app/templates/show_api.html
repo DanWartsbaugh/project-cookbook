@@ -43,7 +43,7 @@
             <ul>
                 {% for ingredient in ingredients %}
         <!-- This if statement checks to see if an ingredient is present, if so it will list it -->
-                    {% if ingredient %}
+                    {% if ingredient != '' %}
                         <li>{{ ingredient }}</li>
                     {% endif %}
                 {% endfor %}
@@ -57,9 +57,29 @@
     </p>
     
 
-
-    <button onclick=window.location.href="/save_random" class="btn" style="width:125px;background-color:orange;margin-right:5px;">Save Recipe</button>
-    <button onclick=window.location.href="/random" class="btn" style="width:150px;background-color:orange;margin-right:5px;"><b>Try Again</b></button>
+    <form action="/create" method="post">
+        <input type="hidden" name="name" value="{{data.meals[0]['strMeal']}}">
+        <input type="hidden" name="type" value="{{data.meals[0]['strCategory']}}">
+        <input type="hidden" name="sub_type" value="{{data.meals[0]['strArea']}}">
+        <input type="hidden" name="prep_time" value=0>
+        <input type="hidden" name="cook_time" value=0>
+        <input type="hidden" name="description" value="">
+            {% for ingredient in ingredients %}
+        <!-- This if statement checks to see if an ingredient is present, if so it will list it -->
+                    {% if ingredient %}
+                        <input type="hidden" name="ingredients" value="{{ingredient}}">
+                    {% endif %}
+                {% endfor %}
+        <input type="hidden" name="instructions" value="{{data.meals[0]['strInstructions']}}">
+        <input type="hidden" name="user_id" value="{{session.user_id}}">
+        <input type="hidden" name="test" value=0>
+        <input type="hidden" name="notes" value="">
+        <input type="hidden" name="open" value=1>
+        <input type="hidden" name="original" value=0>
+        <input type="hidden" name="version" value=1>
+        <input class="btn" style="font-weight:bold;width:150px;background-color:orange;margin-right:5px;" type="submit" value="Save to cookbook">
+    </form>
+    <button onclick=window.location.href="/random" class="btn" style="margin-top:10px;width:150px;background-color:orange;margin-right:5px;"><b>Try Again</b></button>
 
 </body>
 

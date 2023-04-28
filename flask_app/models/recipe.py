@@ -75,8 +75,8 @@ class Recipe:
 
     # UPDATE
     @classmethod
-    def update(cls,data):
-        query = "UPDATE recipes SET name=%(name)s, type=%(type)s, sub_type=%(sub_type)s, prep_time=%(prep_time)s, cook_time=%(cook_time)s, description=%(description)s,instructions=%(instructions)s WHERE id = %(id)s;"
+    def update(cls,data,notes=None):
+        query = "UPDATE recipes SET name=%(name)s, type=%(type)s, sub_type=%(sub_type)s, prep_time=%(prep_time)s, cook_time=%(cook_time)s, description=%(description)s,instructions=%(instructions)s,notes=%(notes)s WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
     
     #DELETE
@@ -92,7 +92,6 @@ class Recipe:
         query = "SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id LEFT JOIN ingredients on recipes.id = ingredients.recipe_id WHERE recipes.id = %(id)s;"
         data = {'id':id}
         results = connectToMySQL(DATABASE).query_db(query,data)
-        # print("results =", results)
         recipe = cls(results[0])
         for ingredient in results:
             ingredient_data = {

@@ -128,7 +128,7 @@ def load_random():
                 else:
                     ingredients.append(ingredient)
 
-    return render_template('random.html', data=data, ingredients=ingredients)
+    return render_template('show_api.html', data=data, ingredients=ingredients)
 
 #NEW VERSION OF RECIPE- render form
 @app.route('/testkitchen/new/<int:id>')
@@ -168,7 +168,13 @@ def send_recipe(id):
 
 @app.route('/testkitchen/recipe/<int:id>')
 def show_test_recipe(id):
-    return render_template("show_test.html",recipe=Recipe.get_recipe(id))
+    recipe=Recipe.get_recipe(id)
+    original = Recipe.get_recipe(recipe.original)
+    print(original)
+    session['original']=[]
+    for ingredient in original.ingredients:
+        session['original'].append(ingredient.text)
+    return render_template("show_test.html",recipe=recipe)
 
 #UPDATE - This route renders the form
 @app.route('/edit/<int:id>')
@@ -177,9 +183,11 @@ def edit(id):
         return redirect('/mycookbook')
     recipe = Recipe.get_recipe(id)
     session['ing_ids']=[]
+    session['test']=recipe.test
+    print("session test =",session['test'])
     for ingredient in recipe.ingredients:
         session["ing_ids"].append(str(ingredient.id))
-    print(session["ing_ids"])
+    # print(session["ing_ids"])
     if session['user_id'] != recipe.user_id:
         return redirect('/mycookbook')
     return render_template('edit.html', recipe=recipe)
@@ -187,26 +195,27 @@ def edit(id):
 #UPDATE - Processing
 @app.route('/recipes/update/<int:id>',methods=['POST'])
 def update(id):
-    pprint(request.form)
+    # pprint(request.form)
     # if not Recipe.validate_recipe(request.form):
     #     return redirect(f"/recipes/edit/{request.form['id']}")
     recipe = Recipe.update(request.form)
     ids=request.form.getlist('ingredient-id')
     vals=request.form.getlist('ingredients')
-    print(ids)
-    print(vals)
+    # print(ids)
+    # print(vals)
     for i in session["ing_ids"]:
         if i not in ids:
             Ingredient.deleteIngredient(i)
     for i in range (len(vals)):
         data={'id':ids[i],'text':vals[i]}
-        print(data)
         if ids[i]=='0':
-            print("HI GUYS!!!")
             Ingredient.save_ingredient(recipe_id=id,text=vals[i])
         else:
             Ingredient.update_ingredients(data)
-    return redirect(f"/mycookbook/recipe/{id}")
+    if session['test']==0:
+        return redirect(f"/mycookbook/recipe/{id}")
+    if session['test']==1:
+        return redirect(f"/testkitchen/recipe/{id}")
 
 #DELETE
 @app.route('/delete-recipe/<int:id>')

@@ -14,9 +14,12 @@
         <h1 style="color:orange">My Cookbook</h1>
     </div>
     <div class="right">
-        <a href="/mycookbook" style="text-decoration:none;color:orange"><b>My Cookbook</b></a>  |  <a href="/testkitchen" style="text-decoration:none;color:orange"><b>Test Kitchen</b></a>  |  <a href="/logout" style="text-decoration:none;color:orange"><b>Logout</b></a>
+        <a href="/mycookbook" style="text-decoration:none;color:orange"><b>My Cookbook</b></a> | <a href="/testkitchen"
+            style="text-decoration:none;color:orange"><b>Test Kitchen</b></a> | <a href="/logout"
+            style="text-decoration:none;color:orange"><b>Logout</b></a>
     </div>
 </div>
+
 <body>
     <h1>Edit Your Recipe</h1>
     {% with messages = get_flashed_messages() %} <!-- declare a variable called messages -->
@@ -26,6 +29,7 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
+    
     <form action="/recipes/update/{{recipe.id}}" method="post">
         <input type="hidden" name="user_id" value="{{session.user_id}}">
         <input type="hidden" name="id" value="{{recipe.id}}">
@@ -48,33 +52,49 @@
             Description: <input type="text" name="description" value="{{recipe.description}}">
         </div>
         <div class="form-control" id="ingredients-section">
-            <div id="ingredients_container">
-                <label>Ingredients:</label>
-                {% for ingredient in recipe.ingredients %}
-                {% if ingredient.id %}
-                    
-                <div class="ingredients_row">
-                    <input type="hidden" name="ingredient-id" value="{{ingredient.id}}">
-                    <input type="text" name="ingredients" class="ingredients_input" value="{{ingredient.text}}">
-                    <button onclick={remove_parent(this)} type="button" class="remove_ingredients_row">X</button>
+                <div class="d-flex">
+                <div>
+                <div id="ingredients_container">
+                    <label>Ingredients:</label>
+                    {% for ingredient in recipe.ingredients %}
+                    {% if ingredient.id %}
+
+                    <div class="ingredients_row">
+                        <input type="hidden" name="ingredient-id" value="{{ingredient.id}}">
+                        <input type="text" name="ingredients" class="ingredients_input" value="{{ingredient.text}}">
+                        <button onclick={remove_parent(this)} type="button" class="remove_ingredients_row">X</button>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                {% endif %}   
-                {% endfor %}
+                <button type="button" id="add_ingredients_row">+</button>
+                </div>
+                {% if recipe.test==1 %}
+                    
+                <div style="border-left:1px solid gray; padding-left:10px;">
+                    <h5>Original Ingredients</h5>
+                    <ul>
+                        {% for ingredient in session.original %}
+                        <li>{{ingredient}}</li>
+                        {% endfor %}
+                    </ul>
+                    <a href="#" style="color:orange;text-decoration:none;">hide</a>
+                </div>
+                {% endif %}
             </div>
-            <button type="button" id="add_ingredients_row">+</button>
-        <div class="form-control">
-            Instructions:
-            <textarea name="instructions" rows="10" cols="40">{{recipe.instructions}}</textarea>
-        </div>
-        {% if recipe.test==1 %}
-        <div class="form-control">
-            Notes:
-            <textarea name="notes"  rows="10" cols="40" value="{{recipe.notes}}">{{recipe.notes}}</textarea>
-        </div>
-        {% endif %}
+            <div class="form-control">
+                Instructions:
+                <textarea name="instructions" rows="10" cols="40">{{recipe.instructions}}</textarea>
+            </div>
+            {% if recipe.test==1 %}
+            <div class="form-control">
+                Notes:
+                <textarea name="notes" rows="10" cols="40" value="{{recipe.notes}}">{{recipe.notes}}</textarea>
+            </div>
+            {% endif %}
 
 
-        <input type="submit" value="Update Recipe">
+            <input type="submit" value="Update Recipe">
     </form>
 </body>
 
@@ -114,10 +134,10 @@
             });
         });
     });
-    const remove_parent=(el) => {
-                //it targets the parentNode which is the div in this case
-                el.parentNode.remove();
-            }
+    const remove_parent = (el) => {
+        //it targets the parentNode which is the div in this case
+        el.parentNode.remove();
+    }
 </script>
 
 </html>

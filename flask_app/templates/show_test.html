@@ -54,12 +54,9 @@
         <div style="border-left:1px solid gray; padding-left:10px;">
             <h5>Original Ingredients</h5>
             <ul>
-                <li>Ingredient 1</li>
-                <li>Ingredient 2</li>
-                <li>Ingredient 3</li>
-                <li>Ingredient 4</li>
-                <li>Ingredient 5</li>
-                <li>Ingredient 6</li>
+                {% for ingredient in session.original %}
+                    <li>{{ingredient}}</li>
+                {% endfor %}
             </ul>
             <a href="#" style="color:orange;text-decoration:none;">hide</a>
         </div>
