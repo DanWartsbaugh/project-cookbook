@@ -176,6 +176,10 @@ def edit(id):
     if 'user_id' not in session:
         return redirect('/mycookbook')
     recipe = Recipe.get_recipe(id)
+    session['ing_ids']=[]
+    for ingredient in recipe.ingredients:
+        session["ing_ids"].append(str(ingredient.id))
+    print(session["ing_ids"])
     if session['user_id'] != recipe.user_id:
         return redirect('/mycookbook')
     return render_template('edit.html', recipe=recipe)
@@ -186,14 +190,22 @@ def update(id):
     pprint(request.form)
     # if not Recipe.validate_recipe(request.form):
     #     return redirect(f"/recipes/edit/{request.form['id']}")
-    Recipe.update(request.form)
+    recipe = Recipe.update(request.form)
     ids=request.form.getlist('ingredient-id')
     vals=request.form.getlist('ingredients')
     print(ids)
     print(vals)
-    for i in range (len(ids)):
+    for i in session["ing_ids"]:
+        if i not in ids:
+            Ingredient.deleteIngredient(i)
+    for i in range (len(vals)):
         data={'id':ids[i],'text':vals[i]}
-        Ingredient.update_ingredients(data)
+        print(data)
+        if ids[i]=='0':
+            print("HI GUYS!!!")
+            Ingredient.save_ingredient(recipe_id=id,text=vals[i])
+        else:
+            Ingredient.update_ingredients(data)
     return redirect(f"/mycookbook/recipe/{id}")
 
 #DELETE
@@ -204,8 +216,9 @@ def delete(id):
         return redirect('/recipes')
     if 'user_id' not in session:
         return redirect('/logout')
+    Ingredient.deletewithrecipe(id)
     Recipe.delete(id)
-    return redirect('/recipes')
+    return redirect('/mycookbook')
 
 
 # #A redirect with reference to an id gotten from the page

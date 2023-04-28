@@ -71,8 +71,8 @@
     <p>{{recipe.notes}}</p>
     <div class="d-flex mb-3">
         <button style="width:125px;background-color:orange;margin-right:5px;">Create a new version</button>
-        <button style="width:125px;background-color:orange;margin-left:5px">Update this version</button>
-        <button style="width:125px;background-color:orange;margin-left:5px">Delete this version</button>
+        <button onclick=window.location.href="/edit/{{recipe.id}}" style="width:125px;background-color:orange;margin-left:5px">Update this version</button>
+        <button onclick=window.location.href='/delete-recipe/{{recipe.id}}' style="width:125px;background-color:orange;margin-left:5px">Delete this version</button>
     </div>
     <button style="width:125px;background-color:orange;margin-right:5px;">Save recipe in my cookbook</button>
 

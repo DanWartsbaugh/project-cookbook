@@ -51,14 +51,17 @@
             <div id="ingredients_container">
                 <label>Ingredients:</label>
                 {% for ingredient in recipe.ingredients %}
+                {% if ingredient.id %}
                     
                 <div class="ingredients_row">
                     <input type="hidden" name="ingredient-id" value="{{ingredient.id}}">
                     <input type="text" name="ingredients" class="ingredients_input" value="{{ingredient.text}}">
-                    <button type="button" class="remove_ingredients_row">X</button>
+                    <button onclick={remove_parent(this)} type="button" class="remove_ingredients_row">X</button>
                 </div>
+                {% endif %}   
                 {% endfor %}
-
+            </div>
+            <button type="button" id="add_ingredients_row">+</button>
         <div class="form-control">
             Instructions:
             <textarea name="instructions" rows="10" cols="40">{{recipe.instructions}}</textarea>
@@ -87,16 +90,9 @@
         // We are defining our actual row we want to input in
         const ingredientsRowHtml = `
         <div class="ingredients_row">
+        <input type="hidden" name="ingredient-id" value=0>
+
       <input type="text" name="ingredients" class="ingredients_input">
-      <input type="text" name="ingredient_quantity" class="ingredient_quantity_input">
-                    <select name="ingredient_measurement" class="ingredient_measurement_select">
-                        <option value="none">--Select--</option>
-                        <option value="tsp">tsp</option>
-                        <option value="tbsp">tbsp</option>
-                        <option value="cup">cup</option>
-                        <option value="oz">oz</option>
-                        <option value="lb">lb</option>
-                    </select>
       <button type="button" class="remove_ingredients_row">X</button>
     </div>
 `;
@@ -118,6 +114,10 @@
             });
         });
     });
+    const remove_parent=(el) => {
+                //it targets the parentNode which is the div in this case
+                el.parentNode.remove();
+            }
 </script>
 
 </html>

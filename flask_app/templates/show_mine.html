@@ -23,7 +23,7 @@
     <p>created by: {{recipe.user_name}}</p>
     <div class="d-flex mb-3">
         <button onclick=window.location.href="/edit/{{recipe.id}}" style="width:125px;background-color:orange;margin-right:5px;">Edit recipe</button>
-        <button style="width:125px;background-color:orange;margin-left:5px">Delete from my cookbook</button>
+        <button onclick=window.location.href='/delete-recipe/{{recipe.id}}' style="width:125px;background-color:orange;margin-left:5px">Delete from my cookbook</button>
         <button onclick=window.location.href="/testkitchen/send/{{recipe.id}}" style="width:125px;background-color:orange;margin-left:5px">Send to my test kitchen</button>
     </div>
     <h5>Total time to prepare: {{recipe.prep_time + recipe.cook_time}} minutes</h5>

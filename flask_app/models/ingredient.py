@@ -38,11 +38,19 @@ class Ingredient:
     
     #DELETE
     @classmethod
-    def delete(cls, id):
+    def deleteIngredient(cls, id):
         query  = "DELETE FROM ingredients WHERE id = %(id)s;"
         data = {"id": id}
         return connectToMySQL(DATABASE).query_db(query, data)
     
+    #DELETE
+    @classmethod
+    def deletewithrecipe(cls, id):
+        query  = "DELETE FROM ingredients WHERE recipe_id = %(id)s;"
+        data = {"id": id}
+        return connectToMySQL(DATABASE).query_db(query, data)
+
+
     #READ ONE WITH OTHERS (e.g. get user with ingredients)
     @classmethod
     def get_ingredient(cls,id):
