@@ -20,12 +20,23 @@ def load_search():
         return redirect('/logout')
     return render_template('search.html')
 
+#Main test dashboard
 @app.route('/testkitchen')
 def test_board():
     if 'user_id' not in session:
         return redirect('/logout')
     recipes = Recipe.get_test_recipes(session['user_id'])
     return render_template('test_board.html', recipes = recipes)
+
+######### NEW 4-28 ##############
+#GET ALL VERSIONS OF ONE RECIPE 
+@app.route('/testkitchen/<int:id>')
+def test_versions(id):
+    if 'user_id' not in session:
+        return redirect('/logout')
+    recipes = Recipe.get_test_versions(id)
+    return render_template('version_board.html', recipes = recipes)
+##################################
 
 #NEW - render form
 @app.route('/mycookbook/new-recipe')

@@ -24,7 +24,7 @@
     <div class="d-flex mb-3">
         <button onclick=window.location.href="/edit/{{recipe.id}}" style="width:125px;background-color:orange;margin-right:5px;">Edit recipe</button>
         <button style="width:125px;background-color:orange;margin-left:5px">Delete from my cookbook</button>
-        <button style="width:125px;background-color:orange;margin-left:5px">Send to my test kitchen</button>
+        <button onclick=window.location.href="/testkitchen/send/{{recipe.id}}" style="width:125px;background-color:orange;margin-left:5px">Send to my test kitchen</button>
     </div>
     <h5>Total time to prepare: {{recipe.prep_time + recipe.cook_time}} minutes</h5>
     <p><i>Prep time: {{recipe.prep_time}} minutes<br>Cook time: {{recipe.cook_time}} minutes</i></p>

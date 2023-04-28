@@ -42,13 +42,22 @@ class Recipe:
     @classmethod
     def get_test_recipes(cls,id):
         data={'id':id}
-        query = "SELECT * FROM recipes JOIN users ON users.id = recipes.user_id WHERE user_id = %(id)s AND test = 1;"
+        query = "SELECT * FROM recipes JOIN users ON users.id = recipes.user_id WHERE user_id = %(id)s AND test = 1 AND version = 1;"
         results = connectToMySQL(DATABASE).query_db(query,data)
         recipes = []
         for recipe in results:
             recipes.append(cls(recipe))
         return recipes
     
+    @classmethod
+    def get_test_versions(cls,id):
+        data={'id':id}
+        query = "SELECT * FROM recipes JOIN users ON users.id = recipes.user_id WHERE original = %(id)s;"
+        results = connectToMySQL(DATABASE).query_db(query,data)
+        recipes = []
+        for recipe in results:
+            recipes.append(cls(recipe))
+        return recipes
     
     #CREATE
     @classmethod
@@ -80,7 +89,7 @@ class Recipe:
     #READ ONE WITH OTHERS (e.g. get user with recipes)
     @classmethod
     def get_recipe(cls,id):
-        query = "SELECT * FROM recipes JOIN users ON recipes.user_id = users.id JOIN ingredients on recipes.id = ingredients.recipe_id WHERE recipes.id = %(id)s;"
+        query = "SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id LEFT JOIN ingredients on recipes.id = ingredients.recipe_id WHERE recipes.id = %(id)s;"
         data = {'id':id}
         results = connectToMySQL(DATABASE).query_db(query,data)
         # print("results =", results)
