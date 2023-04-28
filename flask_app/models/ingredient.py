@@ -51,29 +51,29 @@ class Ingredient:
         return connectToMySQL(DATABASE).query_db(query, data)
 
 
-    #READ ONE WITH OTHERS (e.g. get user with ingredients)
-    @classmethod
-    def get_ingredient(cls,id):
-        query = "SELECT * FROM ingredients JOIN users ON ingredients.user_id = users.id WHERE ingredients.id = %(id)s;"
-        data = {'id':id}
-        results = connectToMySQL(DATABASE).query_db(query,data)
-        # print("results =", results)
-        user = cls(results[0])
-        for ingredient in results:
-            ingredient_data = {
-                "id":ingredient["id"],
-                "text":ingredient["text"],
-                "description":ingredient["description"],
-                "instructions":ingredient["instructions"],
-                "under_30":ingredient["under_30"],
-                "date_made":ingredient["date_made"],
-                "user_id":ingredient["user_id"],
-                "created_at":ingredient["created_at"],
-                "updated_at":ingredient["updated_at"],
-                "user":ingredient["first_name"],
-            }
-            # user.ingredients.append( Ingredient( ingredient_data ) )
-        return user
+    # #READ ONE WITH OTHERS (e.g. get user with ingredients)
+    # @classmethod
+    # def get_ingredient(cls,id):
+    #     query = "SELECT * FROM ingredients JOIN users ON ingredients.user_id = users.id WHERE ingredients.id = %(id)s;"
+    #     data = {'id':id}
+    #     results = connectToMySQL(DATABASE).query_db(query,data)
+    #     # print("results =", results)
+    #     user = cls(results[0])
+    #     for ingredient in results:
+    #         ingredient_data = {
+    #             "id":ingredient["id"],
+    #             "text":ingredient["text"],
+    #             "description":ingredient["description"],
+    #             "instructions":ingredient["instructions"],
+    #             "under_30":ingredient["under_30"],
+    #             "date_made":ingredient["date_made"],ne
+    #             "user_id":ingredient["user_id"],
+    #             "created_at":ingredient["created_at"],
+    #             "updated_at":ingredient["updated_at"],
+    #             "user":ingredient["first_name"],
+    #         }
+    #         # user.ingredients.append( Ingredient( ingredient_data ) )
+    #     return user
     
     @staticmethod
     def validate_ingredient(ingredient):
