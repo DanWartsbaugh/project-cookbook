@@ -9,17 +9,19 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <title>Document</title>
 </head>
-
-<body style="padding:20px">
-    <div class="nav d-flex justify-content-between mb-3 border-bottom border-dark">
-        <div class="left">
-            <h1 style="color:orange">My Cookbook</h1>
-        </div>
-        <div class="right">
-            <a href="/mycookbook" style="text-decoration:none;color:orange"><b>My Cookbook</b></a>  |  <a href="/testkitchen" style="text-decoration:none;color:orange"><b>Test Kitchen</b></a>  |  <a href="/logout" style="text-decoration:none;color:orange"><b>Logout</b></a>
-        </div>
+<div class="nav d-flex justify-content-between mb-3 border-bottom border-dark">
+    <div class="left">
+        <h1 style="color:orange">My Cookbook</h1>
     </div>
-    <h2>Create a New Recipe</h2>
+    <div class="right">
+        <a href="/mycookbook" style="text-decoration:none;color:orange"><b>My Cookbook</b></a> | <a href="/testkitchen"
+            style="text-decoration:none;color:orange"><b>Test Kitchen</b></a> | <a href="/logout"
+            style="text-decoration:none;color:orange"><b>Logout</b></a>
+    </div>
+</div>
+
+<body>
+    <h1>Edit Your Recipe</h1>
     {% with messages = get_flashed_messages() %} <!-- declare a variable called messages -->
     {% if messages %} <!-- check if there are any messages -->
     {% for message in messages %} <!-- loop through the messages -->
@@ -27,62 +29,76 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
+
     <form action="/create" method="post">
         <input type="hidden" name="user_id" value="{{session.user_id}}">
         <input type="hidden" name="test" value=1>
         <input type="hidden" name="notes" value="">
         <input type="hidden" name="open" value=0>
-        <input type="hidden" name="original" value=>
-        <input type="hidden" name="version" value=1>
-
-
+        <input type="hidden" name="original" value="{{session['original_id']}}">
+        <input type="hidden" name="version" value="{{session['vers']+1}}">
         <div class="form-control">
-            <label for="name"><h4>Recipe Name:</h4></label>  <input type="text" name="name" id="">
+            Recipe Name: <input type="text" name="name" value="{{recipe.name}}">
         </div>
         <div class="form-control">
-            <label for="prep_time"><h4>Prep Time:</h4></label>  <input type="text" name="prep_time" value="0"> minutes (whole numbers only)
+            Prep Time: <input type="text" name="prep_time" value="{{recipe.prep_time}}">
         </div>
         <div class="form-control">
-            <label for="cook_time"><h4>Cook Time:</h4></label>  <input type="text" name="cook_time" value="0"> minutes (whole numbers only)
+            Cook Time: <input type="text" name="cook_time" value="{{recipe.cook_time}}">
         </div>
         <div class="form-control">
-            <label for="type"><h4>Type:</h4></label>  <input type="text" name="type" id="">
-        </div>        <div class="form-control">
-            <label for="sub_type"><h4>Sub-type:</h4></label>  <input type="text" name="sub_type" id="">
+            Type: <input type="text" name="type" value="{{recipe.type}}">
         </div>
         <div class="form-control">
-            <label for="description"><h4>Description:</h4></label>  <input type="text" name="description">
+            Sub-type: <input type="text" name="sub_type" value="{{recipe.sub_type}}">
+        </div>
+        <div class="form-control">
+            Description: <input type="text" name="description" value="{{recipe.description}}">
         </div>
         <div class="form-control" id="ingredients-section">
-            <div id="ingredients_container">
-                <label><h4>Ingredients:</h4></label>
-                <div class="ingredients_row">
-                    <input type="text" name="ingredients" class="ingredients_input">
-                    <button type="button" class="remove_ingredients_row">X</button>
+                <div class="d-flex">
+                <div>
+                <div id="ingredients_container">
+                    <label>Ingredients:</label>
+                    {% for ingredient in recipe.ingredients %}
+                    {% if ingredient.id %}
+
+                    <div class="ingredients_row">
+                        <input type="hidden" name="ingredient-id" value="{{ingredient.id}}">
+                        <input type="text" name="ingredients" class="ingredients_input" value="{{ingredient.text}}">
+                        <button onclick={remove_parent(this)} type="button" class="remove_ingredients_row">X</button>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                <div class="ingredients_row">
-                    <input type="text" name="ingredients" class="ingredients_input">
-                    <button type="button" class="remove_ingredients_row">X</button>
+                <button type="button" id="add_ingredients_row">+</button>
                 </div>
-                <div class="ingredients_row">
-                    <input type="text" name="ingredients" class="ingredients_input">
-                    <button type="button" class="remove_ingredients_row">X</button>
+                {% if recipe.test==1 %}
+                    
+                <div style="border-left:1px solid gray; padding-left:10px;">
+                    <h5>Original Ingredients</h5>
+                    <ul>
+                        {% for ingredient in session.original %}
+                        <li>{{ingredient}}</li>
+                        {% endfor %}
+                    </ul>
+                    <a href="#" style="color:orange;text-decoration:none;">hide</a>
                 </div>
+                {% endif %}
             </div>
-            <button type="button" id="add_ingredients_row">+</button>
-        </div>
+            <div class="form-control">
+                Instructions:
+                <textarea name="instructions" rows="10" cols="40">{{recipe.instructions}}</textarea>
+            </div>
+            {% if recipe.test==1 %}
+            <div class="form-control">
+                Notes:
+                <textarea name="notes" rows="10" cols="40" value="{{recipe.notes}}">{{recipe.notes}}</textarea>
+            </div>
+            {% endif %}
 
-        <div class="form-control">
-            <h4>Instructions:</h4>
-            <textarea name="instructions" rows="10" cols="40"></textarea>
-        </div>
-        <div class="form-control">
-            <h4>Notes:</h4>
-            <textarea name="notes" rows="10" cols="40"></textarea>
-        </div>
 
-
-        <input type="submit" value="Add New Version">
+            <input type="submit" value="Create new version">
     </form>
 </body>
 
@@ -98,16 +114,9 @@
         // We are defining our actual row we want to input in
         const ingredientsRowHtml = `
         <div class="ingredients_row">
+        <input type="hidden" name="ingredient-id" value=0>
+
       <input type="text" name="ingredients" class="ingredients_input">
-      <input type="text" name="ingredient_quantity" class="ingredient_quantity_input">
-                    <select name="ingredient_measurement" class="ingredient_measurement_select">
-                        <option value="none">--Select--</option>
-                        <option value="tsp">tsp</option>
-                        <option value="tbsp">tbsp</option>
-                        <option value="cup">cup</option>
-                        <option value="oz">oz</option>
-                        <option value="lb">lb</option>
-                    </select>
       <button type="button" class="remove_ingredients_row">X</button>
     </div>
 `;
@@ -129,6 +138,10 @@
             });
         });
     });
+    const remove_parent = (el) => {
+        //it targets the parentNode which is the div in this case
+        el.parentNode.remove();
+    }
 </script>
 
 </html>

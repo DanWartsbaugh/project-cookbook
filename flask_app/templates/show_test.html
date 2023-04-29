@@ -13,24 +13,22 @@
 </head>
 
 <body style="padding:20px">
-    <div class="nav d-flex justify-content-between mb-3 border-bottom border-dark">
+    <div class="nav d-flex justify-content-between align-items-center mb-3 border-bottom border-dark" style="background-color:lightgray">
         <div class="left">
             <h1 style="color:orange">My Test Kitchen</h1>
         </div>
         <div class="right">
-            <a href="/mycookbook" style="text-decoration:none;color:orange"><b>My Cookbook</b></a> | <a href="/search/a"
+            <a href="/mycookbook" style="text-decoration:none;color:orange"><b>My Cookbook</b></a>  |  <a href="/testkitchen" style="text-decoration:none;color:orange"><b>Test Kitchen</b></a>  |  <a href="/search/a"
                 style="text-decoration:none;color:orange"><b>Search</b></a> | <a href="/logout"
                 style="text-decoration:none;color:orange"><b>Logout</b></a>
         </div>
     </div>
-
     <h3>{{recipe.name}}</h3>
-    <select name="Version" id="" class="mb-3">
-        <option value="">Version 1</option>
-        <option value="">Version 2</option>
-        <option value="">Version 3</option>
-        <option value="">Version 4</option>
-        <option value="">Version 5</option>
+        {% for version in session['versions'] %}
+        <a href='/testkitchen/recipe/{{version.id}}'value="{{version.id}}" style="text-decoration:none;color:orange;margin-right:8px">Version {{version.version}}</a>
+            
+        {% endfor %}
+
 
     </select>
 
@@ -67,7 +65,7 @@
     <h4>Notes</h4>
     <p>{{recipe.notes}}</p>
     <div class="d-flex mb-3">
-        <button style="width:125px;background-color:orange;margin-right:5px;">Create a new version</button>
+        <button onclick=window.location.href='/testkitchen/new/{{recipe.id}}' style="width:125px;background-color:orange;margin-right:5px;">Create a new version</button>
         <button onclick=window.location.href="/edit/{{recipe.id}}" style="width:125px;background-color:orange;margin-left:5px">Update this version</button>
         <button onclick=window.location.href='/delete-recipe/{{recipe.id}}' style="width:125px;background-color:orange;margin-left:5px">Delete this version</button>
     </div>
