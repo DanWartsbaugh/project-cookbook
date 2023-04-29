@@ -70,6 +70,12 @@ def test_versions(id):
     if 'user_id' not in session:
         return redirect('/logout')
     recipes = Recipe.get_test_versions(id)
+    session['versions']=[]
+    session['vers'] = 0
+    for i in recipes:
+        session['versions'].append({'version':session['vers']+1,'id':i.id})
+        session['vers']+=1
+        print(session['versions'])
     return render_template('version_board.html', recipes = recipes)
 ##################################
 
@@ -83,17 +89,20 @@ def new_recipe():
 #NEW - process the form and redirect
 @app.route('/create', methods=['POST'])
 def create_recipe():
-
     # if not Recipe.validate_recipe(request.form):
     #     return redirect('/mycookbook/new-recipe')
     pprint(request.form)
     recipe=Recipe.save(request.form)
+    print('recipe=',recipe)
     pprint(request.form.getlist('ingredients'))
     for ingredient in request.form.getlist('ingredients'):
         print(ingredient)
         if ingredient != '':
             Ingredient.save_ingredient(recipe_id=recipe,text=ingredient)
-    return redirect('/mycookbook') #redirect to show page for this recipe
+    if session['test']==0:
+        return redirect('/mycookbook/recipe/{recipe}') #redirect to show page for this recipe
+    if session['test']==1:
+        return redirect(f"/testkitchen/recipe/{recipe}")
 
 @app.route('/random')
 def load_random():
@@ -132,10 +141,19 @@ def load_random():
 
 #NEW VERSION OF RECIPE- render form
 @app.route('/testkitchen/new/<int:id>')
-def new_version():
+def new_version(id):
     if 'user_id' not in session:
         return redirect('/mycookbook')
-    return render_template('new.html')
+    recipe = Recipe.get_recipe(id)
+    session['ing_ids']=[]
+    session['test']=recipe.test
+    print("session test =",session['test'])
+    for ingredient in recipe.ingredients:
+        session["ing_ids"].append(str(ingredient.id))
+    # print(session["ing_ids"])
+    if session['user_id'] != recipe.user_id:
+        return redirect('/testkitchen')
+    return render_template('new-version.html',recipe=recipe)
 
 #NEW VERSION OF RECIPE- process the form and redirect
 @app.route('/new/<int:id>', methods=['POST'])
@@ -170,7 +188,7 @@ def send_recipe(id):
 def show_test_recipe(id):
     recipe=Recipe.get_recipe(id)
     original = Recipe.get_recipe(recipe.original)
-    print(original)
+    session['original_id']=original.id
     session['original']=[]
     for ingredient in original.ingredients:
         session['original'].append(ingredient.text)
